@@ -24,6 +24,13 @@ export const metadata: Metadata = {
     url: "https://lifty.us",
     siteName: "Lifty",
     type: "website",
+    images: [
+      {
+        url: "https://utfs.io/f/7tcovZG9cuXOo2hVZTrpg7DeA6iL4s9mNdqVU3aWuF1MkxtB",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
