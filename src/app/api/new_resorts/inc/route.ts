@@ -11,7 +11,14 @@ export async function POST(request: Request) {
   const referer = request.headers.get("referer");
 
   const allowedDomains =
-    process.env.NODE_ENV === "development" ? ["localhost:3000"] : ["ski.app"];
+    process.env.NODE_ENV === "development"
+      ? ["localhost:3000"]
+      : [
+          "lifty.us",
+          "www.lifty.us",
+          "spontaneous-eight.vercel.app",
+          "www.spontaneous-eight.vercel.app",
+        ];
 
   if (
     !allowedDomains.some(
