@@ -1,3 +1,4 @@
+import { EnrichedPrice } from "@/types/enriched_price";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
@@ -24,21 +25,18 @@ export async function GET(request: Request) {
     const EXTERNAL_API =
       "http://spontaneouslambda-production-7690.up.railway.app";
 
-    let response = await supabase.from("prices").select("*").eq("date", date);
+    const response = await supabase.from("prices").select("*").eq("date", date);
+
     if (response.error) {
       throw new Error("Failed to fetch prices");
     }
 
     if (!response.data || response.data.length === 0) {
-      const externalResponse = await fetch(`${EXTERNAL_API}?date=${date}`);
-      const externalData = await externalResponse.json();
-      await supabase.from("prices").insert(externalData.results);
-      response = await supabase.from("prices").select("*").eq("date", date);
-
-      // Add null check after fetching from external API
-      if (!response.data) {
-        throw new Error("Failed to fetch prices after external API call");
-      }
+      fetch(`${EXTERNAL_API}?date=${date}`).catch(console.error); // Fire and forget
+      return NextResponse.json(
+        { message: "Fetching prices in background" },
+        { status: 202 }
+      );
     }
 
     // Get unique resort_ids from the response data
@@ -57,7 +55,7 @@ export async function GET(request: Request) {
     }
 
     // Combine the price data with resort links
-    const enrichedData = response.data.map((priceItem) => ({
+    const enrichedData: EnrichedPrice[] = response.data.map((priceItem) => ({
       ...priceItem,
       links: linksResponse.data.find(
         (resort: { id: number; link: string }) =>

@@ -22,13 +22,63 @@ export default function ResortTable() {
 
   useEffect(() => {
     setLoading(true);
-    const formattedDate = format(selectedDate, "MM/dd/yyyy");
-    fetch(`/api/prices?date=${formattedDate}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPrices(data.items);
+    const formattedDate = format(selectedDate, "yyyy-MM-dd");
+    const startTime = Date.now();
+    const MAX_POLL_TIME = 60000; // 60 seconds
+
+    const pollGetEndpoint = async () => {
+      try {
+        const response = await fetch(`/api/prices/get?date=${formattedDate}`);
+        const data = await response.json();
+
+        if (response.status === 202) {
+          // Check if we've exceeded the polling time limit
+          if (Date.now() - startTime >= MAX_POLL_TIME) {
+            console.log("Polling timeout reached");
+            setPrices([]);
+            setLoading(false);
+            return;
+          }
+          // If still processing and within time limit, wait 2 seconds and try again
+          await new Promise((resolve) => setTimeout(resolve, 4000));
+          return pollGetEndpoint();
+        }
+
+        setPrices(data.items || []);
         setLoading(false);
-      });
+      } catch (error) {
+        console.error("Error polling prices:", error);
+        setPrices([]);
+        setLoading(false);
+      }
+    };
+
+    const fetchPrices = async () => {
+      console.log("fetching prices");
+      try {
+        const response = await fetch(`/api/prices?date=${formattedDate}`);
+
+        if (response.status === 202) {
+          // If status is 202, switch to polling the get endpoint
+          return pollGetEndpoint();
+        }
+
+        const data = await response.json();
+        setPrices(data.items || []);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching prices:", error);
+        setPrices([]);
+        setLoading(false);
+      }
+    };
+
+    fetchPrices();
+
+    // Cleanup function to prevent memory leaks
+    return () => {
+      setLoading(false);
+    };
   }, [selectedDate]);
 
   const sortData = (key: keyof EnrichedPrice) => {
@@ -152,7 +202,13 @@ export default function ResortTable() {
                 </div>
               </div>
               <div className="flex flex-col justify-between items-end">
-                <div className="text-lg font-bold">${price.price}</div>
+                <div className="text-lg font-bold">
+                  {price.price === -1 ? (
+                    <span className="text-red-500">Unavailable</span>
+                  ) : (
+                    `$${price.price}`
+                  )}
+                </div>
                 <DirectionsBtn
                   lat={price.location.lat}
                   lng={price.location.lng}
