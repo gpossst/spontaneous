@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Roboto, Pacifico } from "next/font/google";
 import "./globals.css";
 import GoogleAdsense from "@/components/GoogleAdsense";
 import HomeNav from "@/components/HomeNav";
@@ -9,6 +9,12 @@ const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["latin"],
   weight: ["400", "700"],
+});
+
+const pacifico = Pacifico({
+  variable: "--font-pacifico",
+  weight: "400",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -54,7 +60,7 @@ export default function RootLayout({
       <head>
         <GoogleAdsense />
       </head>
-      <body className={`${roboto.variable} antialiased`}>
+      <body className={`${roboto.variable} ${pacifico.variable} antialiased`}>
         <div className="flex w-full flex-col items-center justify-center">
           <HomeNav />
           {children}

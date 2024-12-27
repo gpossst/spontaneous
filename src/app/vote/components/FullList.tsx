@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { VoteRequest } from "@/types/vote_request";
 import IncrementBtn from "./IncrementBtn";
 import Load from "@/components/Load";
+import { FaCircleInfo } from "react-icons/fa6";
+
 export default function FullList() {
   const [data, setData] = useState<VoteRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -81,6 +83,20 @@ export default function FullList() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="flex-1 p-2 text-sm border rounded-md border-gray-300"
             />
+            <div className="relative group">
+              <FaCircleInfo className="text-gray-500 cursor-help" />
+              <div className="absolute hidden group-hover:block bg-white border border-gray-200 rounded-md p-2 shadow-lg w-[11.9rem] -right-2 top-6 text-sm">
+                List sourced from{" "}
+                <a
+                  href="https://en.wikipedia.org/wiki/List_of_ski_areas_and_resorts_in_the_United_States"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline"
+                >
+                  Wikipedia
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 

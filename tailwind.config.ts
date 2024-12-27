@@ -65,6 +65,7 @@ export default {
       },
       fontFamily: {
         roboto: ["var(--font-roboto)"],
+        pacifico: ["var(--font-pacifico)"],
       },
     },
   },
