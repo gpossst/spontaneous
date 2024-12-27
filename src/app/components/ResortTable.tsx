@@ -83,13 +83,13 @@ export default function ResortTable() {
         <div className="bg-white h-4"></div>
         <div className="flex gap-2 items-center bg-gray-100 rounded-md p-2 shadow-md">
           <div className="flex flex-row gap-2 items-center">
-            <div>Perfect your search:</div>
+            <div className=" font-roboto">Perfect your search:</div>
             <div className="flex flex-row gap-2">
               <input
                 type="date"
                 value={format(selectedDate, "yyyy-MM-dd")}
                 onChange={handleDateChange}
-                className="border rounded-md font-roboto text-sm p-2 hover:bg-gray-100 transition-colors duration-300 border-gray-300"
+                className="border rounded-md font-roboto text-sm p-2 bg-gray-100 transition-colors duration-300 border-gray-300"
               />
               <button
                 className={`border rounded-md flex flex-row items-center font-roboto text-sm p-2 hover:bg-gray-100 transition-colors duration-300 ${

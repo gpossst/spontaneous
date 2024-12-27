@@ -9,20 +9,36 @@ const supabase = createClient(
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const date =
+    let date =
       searchParams.get("date") || new Date().toISOString().split("T")[0];
-    const EXTERNAL_API = "http://spontaneouslambda-production.up.railway.app";
 
-    const response = await supabase.from("prices").select("*").eq("date", date);
+    // Ensure date is in YYYY-MM-DD format
+    if (date) {
+      const dateObj = new Date(date);
+      if (isNaN(dateObj.getTime())) {
+        throw new Error("Invalid date format");
+      }
+      date = dateObj.toISOString().split("T")[0];
+    }
+
+    const EXTERNAL_API =
+      "http://spontaneouslambda-production-7690.up.railway.app";
+
+    let response = await supabase.from("prices").select("*").eq("date", date);
     if (response.error) {
       throw new Error("Failed to fetch prices");
     }
 
-    if (response.data.length == 0) {
+    if (!response.data || response.data.length === 0) {
       const externalResponse = await fetch(`${EXTERNAL_API}?date=${date}`);
       const externalData = await externalResponse.json();
       await supabase.from("prices").insert(externalData.results);
-      return NextResponse.json(externalData.results);
+      response = await supabase.from("prices").select("*").eq("date", date);
+
+      // Add null check after fetching from external API
+      if (!response.data) {
+        throw new Error("Failed to fetch prices after external API call");
+      }
     }
 
     // Get unique resort_ids from the response data
