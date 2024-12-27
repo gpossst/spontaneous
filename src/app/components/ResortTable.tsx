@@ -6,6 +6,7 @@ import { FaSort, FaSortUp, FaSortDown, FaMapMarkerAlt } from "react-icons/fa";
 import Load from "@/components/Load";
 import DirectionsBtn from "./DirectionsBtn";
 import { FaChevronRight } from "react-icons/fa";
+import { format, parse } from "date-fns";
 
 type SortConfig = {
   key: keyof EnrichedPrice;
@@ -17,15 +18,18 @@ export default function ResortTable() {
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
-    fetch("/api/prices")
+    setLoading(true);
+    const formattedDate = format(selectedDate, "MM/dd/yyyy");
+    fetch(`/api/prices?date=${formattedDate}`)
       .then((res) => res.json())
       .then((data) => {
         setPrices(data.items);
         setLoading(false);
       });
-  }, []);
+  }, [selectedDate]);
 
   const sortData = (key: keyof EnrichedPrice) => {
     let direction: "asc" | "desc" = "asc";
@@ -63,14 +67,30 @@ export default function ResortTable() {
     price.resort_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const dateString = e.target.value;
+    const newDate = parse(
+      dateString + "T12:00:00",
+      "yyyy-MM-dd'T'HH:mm:ss",
+      new Date()
+    );
+    setSelectedDate(newDate);
+  };
+
   return (
     <div className="w-full">
       <div className="sticky top-0 z-50 mb-4 bg-white">
         <div className="bg-white h-4"></div>
         <div className="flex gap-2 items-center bg-gray-100 rounded-md p-2 shadow-md">
           <div className="flex flex-row gap-2 items-center">
-            <div>Sort by:</div>
+            <div>Perfect your search:</div>
             <div className="flex flex-row gap-2">
+              <input
+                type="date"
+                value={format(selectedDate, "yyyy-MM-dd")}
+                onChange={handleDateChange}
+                className="border rounded-md font-roboto text-sm p-2 hover:bg-gray-100 transition-colors duration-300 border-gray-300"
+              />
               <button
                 className={`border rounded-md flex flex-row items-center font-roboto text-sm p-2 hover:bg-gray-100 transition-colors duration-300 ${
                   sortConfig?.key === "resort_name"

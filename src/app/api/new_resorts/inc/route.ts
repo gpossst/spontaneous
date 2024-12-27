@@ -40,9 +40,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: "success" });
   } catch (error) {
-    console.error("Error in API route:", error); // Add this log
     return NextResponse.json(
-      { error: "Failed to fetch prices" },
+      { error: "Failed to fetch prices", message: error },
       { status: 500 }
     );
   }

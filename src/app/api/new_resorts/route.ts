@@ -9,18 +9,14 @@ export async function GET() {
   try {
     const { data, error } = await supabase.from("future_resorts").select("*");
 
-    console.log("Supabase Response:", { data, error }); // Add this log
-
     if (error) {
-      console.error("Supabase Error:", error); // Add this log
       throw error;
     }
 
     return NextResponse.json({ items: data });
   } catch (error) {
-    console.error("Error in API route:", error); // Add this log
     return NextResponse.json(
-      { error: "Failed to fetch prices" },
+      { error: "Failed to fetch prices", message: error },
       { status: 500 }
     );
   }

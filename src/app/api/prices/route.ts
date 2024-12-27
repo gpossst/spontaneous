@@ -28,7 +28,6 @@ export async function GET(request: Request) {
     // Get unique resort_ids from the response data
     const resortIds = [...new Set(response.data.map((item) => item.resort_id))];
 
-    console.log(resortIds);
     // Fetch links for all resort_ids
     const linksResponse = await supabase.rpc(
       "get_resort_links_location_state_region",
@@ -37,9 +36,7 @@ export async function GET(request: Request) {
       }
     );
 
-    console.log(linksResponse);
     if (linksResponse.error) {
-      console.log(linksResponse.error);
       throw new Error("Failed to fetch resort links");
     }
 
@@ -68,9 +65,9 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ items: enrichedData });
   } catch (error) {
-    console.error("Error fetching prices:", error);
+    console.log(error);
     return NextResponse.json(
-      { error: "Failed to fetch prices" },
+      { error: "Failed to fetch prices", message: error },
       { status: 500 }
     );
   }
