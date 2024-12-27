@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import GoogleAdsense from "@/components/GoogleAdsense";
 import HomeNav from "@/components/HomeNav";
+import { Analytics } from "@vercel/analytics/react";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -58,6 +59,7 @@ export default function RootLayout({
           <HomeNav />
           {children}
         </div>
+        <Analytics />
       </body>
     </html>
   );
