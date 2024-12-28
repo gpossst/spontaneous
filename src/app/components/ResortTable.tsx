@@ -93,6 +93,13 @@ export default function ResortTable() {
     }
 
     const sortedData = [...prices].sort((a, b) => {
+      // Special handling for price sorting
+      if (key === "price") {
+        // If either price is -1, move it to the end
+        if (a.price === -1) return 1;
+        if (b.price === -1) return -1;
+      }
+
       if (a[key] < b[key]) return direction === "asc" ? -1 : 1;
       if (a[key] > b[key]) return direction === "asc" ? 1 : -1;
       return 0;
