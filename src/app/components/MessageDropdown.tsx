@@ -11,15 +11,18 @@ export default function MessageDropdown({ message }: MessageDropdownProps) {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full bg-gray-200 p-2 z-50">
-      <div className="mx-auto max-w-7xl flex items-center relative">
-        <p className="text-sky-500 flex-grow text-center">{message}</p>
+    <div className="fixed bottom-0 left-0 right-0 w-full bg-gray-200 p-2 sm:p-3 md:p-4 z-50">
+      <div className="mx-auto max-w-7xl flex items-center justify-between px-2 sm:px-4 relative">
+        <p className="text-sky-500 text-sm sm:text-base md:text-lg text-center flex-grow pr-8">
+          {message}
+        </p>
         <button
           onClick={() => setIsVisible(false)}
-          className="text-sky-500 hover:text-red-500 transition-color duration-100 absolute right-0"
+          className="text-sky-500 hover:text-red-500 transition-color duration-100 absolute right-2 sm:right-4"
+          aria-label="Close message"
         >
           <svg
-            className="h-5 w-5"
+            className="h-4 w-4 sm:h-5 sm:w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
