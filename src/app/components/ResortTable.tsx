@@ -131,9 +131,11 @@ export default function ResortTable() {
     <div className="w-full">
       <div className="sticky top-0 z-50 mb-4 bg-white">
         <div className="bg-white h-4"></div>
-        <div className="flex gap-2 items-center bg-gray-100 rounded-md p-2 shadow-md">
+        <div className="flex flex-col sm:flex-row gap-2 items-center bg-gray-100 rounded-md p-2 shadow-md">
           <div className="flex flex-row gap-2 items-center">
-            <div className=" font-roboto">Perfect your search:</div>
+            <div className="hidden sm:block font-roboto">
+              Perfect your search:
+            </div>
             <div className="flex flex-row gap-2">
               <input
                 type="date"
@@ -168,7 +170,7 @@ export default function ResortTable() {
             placeholder="Find a resort..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 p-2 text-sm border rounded-md border-gray-300"
+            className="flex-1 p-2 w-full sm:w-auto text-sm border rounded-md border-gray-300"
           />
         </div>
       </div>

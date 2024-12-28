@@ -46,7 +46,7 @@ export default function FullList() {
           <div className="bg-white h-4"></div>
           <div className="flex gap-2 items-center bg-gray-100 rounded-md p-2 shadow-md">
             <div className="flex flex-row gap-2 items-center">
-              <div>Filter:</div>
+              <div className="hidden sm:block">Filter:</div>
               <div className="flex flex-row gap-2">
                 <button
                   className={`border rounded-md font-roboto text-sm p-2 hover:bg-gray-100 transition-colors duration-300 ${
@@ -83,7 +83,7 @@ export default function FullList() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="flex-1 p-2 text-sm border rounded-md border-gray-300"
             />
-            <div className="relative group">
+            <div className="relative group hidden sm:block">
               <FaCircleInfo className="text-gray-500 cursor-help" />
               <div className="absolute hidden group-hover:block bg-white border border-gray-200 rounded-md p-2 shadow-lg w-[11.9rem] -right-2 top-6 text-sm">
                 List sourced from{" "}
