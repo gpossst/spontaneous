@@ -4,6 +4,7 @@ import "./globals.css";
 import GoogleAdsense from "@/components/GoogleAdsense";
 import HomeNav from "@/components/HomeNav";
 import { Analytics } from "@vercel/analytics/react";
+import MessageDropdown from "./components/MessageDropdown";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -62,6 +63,7 @@ export default function RootLayout({
       </head>
       <body className={`${roboto.variable} ${pacifico.variable} antialiased`}>
         <div className="flex w-full flex-col items-center justify-center">
+          <MessageDropdown message="🚨 We're currently working on adding Epic Pass resorts. They use queues that make our job more difficult. Thanks for your patience! 🚨" />
           <HomeNav />
           {children}
         </div>
