@@ -182,7 +182,12 @@ export default function ResortTable() {
         </div>
       </div>
       {loading ? (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex flex-col justify-center items-center h-full">
+          <div className="text-sm text-sky-500">
+            Don&apos;t worry, it&apos;s working. We don&apos;t have any records
+            for that date yet, so it&apos;ll take a moment to get everything
+            ready.
+          </div>
           <Load />
         </div>
       ) : (
